@@ -8,11 +8,14 @@ import android.net.Uri;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.webkit.ValueCallback;
 import io.flutter.plugin.common.EventChannel;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
 import io.flutter.plugin.platform.PlatformView;
+import android.annotation.TargetApi;
+import android.os.Build;
 
 import static io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 
@@ -113,9 +116,9 @@ public class FlutterWeb implements PlatformView, MethodCallHandler {
             super.onPageFinished(view, url);
         }
     }
-
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     @Override
-    public void onMethodCall(MethodCall call, MethodChannel.Result result) {
+    public void onMethodCall(MethodCall call,final MethodChannel.Result result) {
         switch (call.method) {
             case "loadUrl":
                 String url = call.arguments.toString();
@@ -125,6 +128,14 @@ public class FlutterWeb implements PlatformView, MethodCallHandler {
                 String html = call.arguments.toString();
                 webView.loadData(html, "text/html", "utf-8");
                 break;
+            case "evalJs":
+                String code = call.arguments.toString();
+                webView.evaluateJavascript(code, new ValueCallback<String>() {
+                    @Override
+                    public void onReceiveValue(String value) {
+                        result.success(value);
+                    }
+                });
             default:
                 result.notImplemented();
         }

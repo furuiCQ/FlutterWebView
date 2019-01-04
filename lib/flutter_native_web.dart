@@ -30,15 +30,11 @@ class _FlutterNativeWebState extends State<FlutterNativeWeb> {
         viewType: 'ponnamkarthik/flutterwebview',
         onPlatformViewCreated: onPlatformCreated,
         creationParamsCodec: const StandardMessageCodec(),
-//        creationParamsCodec: const StandardMessageCodec(),
-//        gestureRecognizers: [new VerticalDragGestureRecognizer(), new HorizontalDragGestureRecognizer(), new TapGestureRecognizer()],
       );
     } else if (defaultTargetPlatform == TargetPlatform.iOS) {
       return UiKitView(
         viewType: 'ponnamkarthik/flutterwebview',
         onPlatformViewCreated: onPlatformCreated,
-        // gestureRecognizers: widget.gestureRecognizers,
-        // creationParams: _CreationParams.fromWidget(widget).toMap(),
         creationParamsCodec: const StandardMessageCodec(),
       );
     }
@@ -78,6 +74,12 @@ class WebController {
     assert(html != null);
     return _channel.invokeMethod('loadData', html);
   }
+  Future<void> evalJs(String code) async {
+  assert(code != null);
+  return _channel.invokeMethod('evalJs', code);
+  }
+
+
 
   Stream<String> get onPageFinished {
     var url = _pageFinsihed
