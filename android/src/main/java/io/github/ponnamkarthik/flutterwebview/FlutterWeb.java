@@ -136,6 +136,7 @@ public class FlutterWeb implements PlatformView, MethodCallHandler {
                         result.success(value);
                     }
                 });
+                break;
             default:
                 result.notImplemented();
         }
