@@ -6,6 +6,7 @@ target/
 .project
 .settings/
 .classpath
+.idea/*
 
 # Miscellaneous
 *.class
