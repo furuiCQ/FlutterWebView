@@ -16,6 +16,7 @@ import io.flutter.plugin.common.PluginRegistry.Registrar;
 import io.flutter.plugin.platform.PlatformView;
 import android.annotation.TargetApi;
 import android.os.Build;
+import android.graphics.Color
 
 import static io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 
