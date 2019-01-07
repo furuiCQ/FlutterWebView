@@ -81,6 +81,7 @@ public class FlutterWeb implements PlatformView, MethodCallHandler {
         WebView webView = new WebView(registrar.context());
         webView.setWebViewClient(new CustomWebViewClient());
         webView.getSettings().setJavaScriptEnabled(true);
+        webView.setBackgroundColor(registrar.context().getResources().getColor(andorid.R.color.white));
         return webView;
     }
 
