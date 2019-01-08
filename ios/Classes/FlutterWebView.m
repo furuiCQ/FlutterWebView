@@ -123,9 +123,10 @@
     if (!data) {
         return false;
     }
-    print(data);
-    
-    [_webView evaluateJavaScript:@"test('"+data+"')" completionHandler:^(id _Nullable response, NSError * _Nullable error) {
+    printf(data);
+    NSString str=[NSString stringWithFormat:@"test'%s'",data];
+    printf(str);
+    [_webView evaluateJavaScript:str completionHandler:^(id _Nullable response, NSError * _Nullable error) {
     }];
     return true;
 }
