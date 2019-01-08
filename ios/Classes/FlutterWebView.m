@@ -110,7 +110,7 @@
 // // 这个onListen是Flutter端开始监听这个channel时的回调，第二个参数 EventSink是用来传数据的载体。
 - (FlutterError* _Nullable)onListenWithArguments:(id _Nullable)arguments
                                        eventSink:(FlutterEventSink)events {
-    printf("%s", arguments);
+    //printf("%s", arguments);
     // arguments flutter给native的参数
     // 回调给flutter， 建议使用实例指向，因为该block可以使用多次
     if (events) {
