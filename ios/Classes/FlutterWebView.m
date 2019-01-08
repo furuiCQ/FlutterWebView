@@ -55,13 +55,13 @@
     _channel = [FlutterMethodChannel methodChannelWithName:channelName binaryMessenger:messenger];
     
     channelName = [NSString stringWithFormat:@"ponnamkarthik/flutterwebview_stream_pagefinish_%lld", viewId];
-    FlutterViewController* flutterViewController = [[FlutterViewController alloc] initWithProject:nil nibName:nil bundle:nil];
-    _onPageFinishEvenetChannel=[FlutterEventChannel eventChannelWithName:channelName binaryMessenger:flutterViewController];
+   
+    _onPageFinishEvenetChannel=[FlutterEventChannel eventChannelWithName:channelName binaryMessenger:messenger];
       [_onPageFinishEvenetChannel setStreamHandler:self];
       
     channelName = [NSString stringWithFormat:@"ponnamkarthik/flutterwebview_stream_pagestart_%lld", viewId];
-    flutterViewController = [[FlutterViewController alloc] initWithProject:nil nibName:nil bundle:nil];
-    onPageStartEvenetChannel=[FlutterEventChannel eventChannelWithName:channelName binaryMessenger:flutterViewController];
+    
+    onPageStartEvenetChannel=[FlutterEventChannel eventChannelWithName:channelName binaryMessenger:messenger];
     [onPageStartEvenetChannel setStreamHandler:self];
 
       
