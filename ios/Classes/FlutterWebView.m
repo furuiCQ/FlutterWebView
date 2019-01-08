@@ -29,10 +29,18 @@
 
 @end
 
+@interface FlutterNativeWebController()<WKNavigationDelegate,FlutterStreamHandler>{
+    
+}
+@end
+
 @implementation FlutterNativeWebController {
   WKWebView* _webView;
   int64_t _viewId;
   FlutterMethodChannel* _channel;
+  FlutterEventChannel* _onPageFinishEvenetChannel;
+  FlutterEventChannel* onPageStartEvenetChannel;
+
 }
 
 - (instancetype)initWithWithFrame:(CGRect)frame
@@ -42,8 +50,21 @@
   if ([super init]) {
     _viewId = viewId;
     _webView = [[WKWebView alloc] initWithFrame:frame];
+    _webView.navigationDelegate=self;
     NSString* channelName = [NSString stringWithFormat:@"ponnamkarthik/flutterwebview_%lld", viewId];
     _channel = [FlutterMethodChannel methodChannelWithName:channelName binaryMessenger:messenger];
+    
+    channelName = [NSString stringWithFormat:@"ponnamkarthik/flutterwebview_stream_pagefinish_%lld", viewId];
+    FlutterViewController* flutterViewController = [[FlutterViewController alloc] initWithProject:nil nibName:nil bundle:nil];
+    _onPageFinishEvenetChannel=[FlutterEventChannel eventChannelWithName:channelName binaryMessenger:flutterViewController];
+      [_onPageFinishEvenetChannel setStreamHandler:self];
+      
+    channelName = [NSString stringWithFormat:@"ponnamkarthik/flutterwebview_stream_pagestart_%lld", viewId];
+    flutterViewController = [[FlutterViewController alloc] initWithProject:nil nibName:nil bundle:nil];
+    onPageStartEvenetChannel=[FlutterEventChannel eventChannelWithName:channelName binaryMessenger:flutterViewController];
+    [onPageStartEvenetChannel setStreamHandler:self];
+
+      
     __weak __typeof__(self) weakSelf = self;
     [_channel setMethodCallHandler:^(FlutterMethodCall* call, FlutterResult result) {
       [weakSelf onMethodCall:call result:result];
@@ -85,5 +106,26 @@
   [_webView loadRequest:req];
   return true;
 }
+#pragma mark - <FlutterStreamHandler>
+// // 这个onListen是Flutter端开始监听这个channel时的回调，第二个参数 EventSink是用来传数据的载体。
+- (FlutterError* _Nullable)onListenWithArguments:(id _Nullable)arguments
+                                       eventSink:(FlutterEventSink)events {
+    printf("%s", arguments);
+    // arguments flutter给native的参数
+    // 回调给flutter， 建议使用实例指向，因为该block可以使用多次
+    if (events) {
+        events(@"我是标题");
+    }
+    return nil;
+}
 
+/// flutter不再接收
+- (FlutterError* _Nullable)onCancelWithArguments:(id _Nullable)arguments {
+    // arguments flutter给native的参数
+    return nil;
+}
+#pragma mark --WKWebView Delegate
+- (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(WKNavigation *)navigation{
+    _channel invokeMethod:<#(nonnull NSString *)#> arguments:<#(id _Nullable)#>
+}
 @end
