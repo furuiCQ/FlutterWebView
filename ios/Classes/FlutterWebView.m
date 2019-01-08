@@ -126,6 +126,6 @@
 }
 #pragma mark --WKWebView Delegate
 - (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(WKNavigation *)navigation{
-    _channel invokeMethod:<#(nonnull NSString *)#> arguments:<#(id _Nullable)#>
+    
 }
 @end
