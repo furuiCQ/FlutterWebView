@@ -81,11 +81,22 @@
 - (void)onMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
   if ([[call method] isEqualToString:@"loadUrl"]) {
     [self onLoadUrl:call result:result];
-  } else {
+  } else if ([[call method] isEqualToString:@"loadData"]) {
+      [self onloadData:call result:result];
+  } else{
     result(FlutterMethodNotImplemented);
   }
 }
-
+- (void)onloadData:(FlutterMethodCall*)call result:(FlutterResult)result {
+    NSString* url = [call arguments];
+    if (![self loadData:url]) {
+        result([FlutterError errorWithCode:@"loadUrl_failed"
+                                   message:@"Failed parsing the URL"
+                                   details:[NSString stringWithFormat:@"URL was: '%@'", url]]);
+    } else {
+        result(nil);
+    }
+}
 - (void)onLoadUrl:(FlutterMethodCall*)call result:(FlutterResult)result {
   NSString* url = [call arguments];
   if (![self loadUrl:url]) {
@@ -96,7 +107,13 @@
     result(nil);
   }
 }
-
+-(bool)loadData:(NSString *)data{
+    if (!data) {
+        return false;
+    }
+    [_webView loadHTMLString:data baseURL:nil];
+    return true;
+}
 - (bool)loadUrl:(NSString*)url {
   NSURL* nsUrl = [NSURL URLWithString:url];
   if (!nsUrl) {
