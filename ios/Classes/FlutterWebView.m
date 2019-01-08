@@ -57,7 +57,7 @@
     channelName = [NSString stringWithFormat:@"ponnamkarthik/flutterwebview_stream_pagefinish_%lld", viewId];
    
     _onPageFinishEvenetChannel=[FlutterEventChannel eventChannelWithName:channelName binaryMessenger:messenger];
-      [_onPageFinishEvenetChannel setStreamHandler:self];
+    [_onPageFinishEvenetChannel setStreamHandler:self];
       
 //    channelName = [NSString stringWithFormat:@"ponnamkarthik/flutterwebview_stream_pagestart_%lld", viewId];
 //
@@ -83,14 +83,26 @@
     [self onLoadUrl:call result:result];
   } else if ([[call method] isEqualToString:@"loadData"]) {
       [self onloadData:call result:result];
-  } else{
+  } else if ([[call method] isEqualToString:@"evalJs"]) {
+      [self onloadData:call result:result];
+  }  else{
     result(FlutterMethodNotImplemented);
   }
+}
+- (void)evalJs:(FlutterMethodCall*)call result:(FlutterResult)result {
+    NSString* data = [call arguments];
+    if (![self evalJs:data]) {
+        result([FlutterError errorWithCode:@"evalJs_failed"
+                                   message:@"Failed parsing the URL"
+                                   details:[NSString stringWithFormat:@"URL was: '%@'", data]]);
+    } else {
+        result(nil);
+    }
 }
 - (void)onloadData:(FlutterMethodCall*)call result:(FlutterResult)result {
     NSString* url = [call arguments];
     if (![self loadData:url]) {
-        result([FlutterError errorWithCode:@"loadUrl_failed"
+        result([FlutterError errorWithCode:@"loadData_failed"
                                    message:@"Failed parsing the URL"
                                    details:[NSString stringWithFormat:@"URL was: '%@'", url]]);
     } else {
@@ -106,6 +118,14 @@
   } else {
     result(nil);
   }
+}
+-(bool)evalJs:(NSString *)data{
+    if (!data) {
+        return false;
+    }
+    [_webView evaluateJavaScript:data completionHandler:^(id _Nullable response, NSError * _Nullable error) {
+    }];
+    return true;
 }
 -(bool)loadData:(NSString *)data{
     if (!data) {
