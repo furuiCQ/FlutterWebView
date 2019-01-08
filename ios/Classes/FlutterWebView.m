@@ -59,10 +59,10 @@
     _onPageFinishEvenetChannel=[FlutterEventChannel eventChannelWithName:channelName binaryMessenger:messenger];
       [_onPageFinishEvenetChannel setStreamHandler:self];
       
-    channelName = [NSString stringWithFormat:@"ponnamkarthik/flutterwebview_stream_pagestart_%lld", viewId];
-    
-    onPageStartEvenetChannel=[FlutterEventChannel eventChannelWithName:channelName binaryMessenger:messenger];
-    [onPageStartEvenetChannel setStreamHandler:self];
+//    channelName = [NSString stringWithFormat:@"ponnamkarthik/flutterwebview_stream_pagestart_%lld", viewId];
+//
+//    onPageStartEvenetChannel=[FlutterEventChannel eventChannelWithName:channelName binaryMessenger:messenger];
+//    [onPageStartEvenetChannel setStreamHandler:self];
 
       
     __weak __typeof__(self) weakSelf = self;
