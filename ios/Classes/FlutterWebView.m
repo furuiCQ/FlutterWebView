@@ -123,7 +123,9 @@
     if (!data) {
         return false;
     }
-    [_webView evaluateJavaScript:data completionHandler:^(id _Nullable response, NSError * _Nullable error) {
+    print(data);
+    
+    [_webView evaluateJavaScript:@"test('"+data+"')" completionHandler:^(id _Nullable response, NSError * _Nullable error) {
     }];
     return true;
 }
