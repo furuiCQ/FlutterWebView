@@ -58,7 +58,7 @@ class WebController {
       init(int id) {
         _channel = new MethodChannel('ponnamkarthik/flutterwebview_$id');
         _pageFinsihed = EventChannel('ponnamkarthik/flutterwebview_stream_pagefinish_$id');
-        _pageStarted = EventChannel('ponnamkarthik/flutterwebview_stream_pagestart_$id');
+        //_pageStarted = EventChannel('ponnamkarthik/flutterwebview_stream_pagestart_$id');
       }
 
   MethodChannel _channel;
